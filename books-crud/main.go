@@ -28,6 +28,8 @@ var books []Book
 const (
 	contentTypeJSON      = "application/json"
 	headerContentTypeKey = "Content-Type"
+	bookIDRoute          = "/books/{id}"
+	
 )
 
 func getBooks(w http.ResponseWriter, r *http.Request) {
@@ -89,11 +91,11 @@ func main() {
 	books = append(books, Book{ID: "1", Isbn: "456789", Title: "Amazing Book", Author: &Author{FirstName: "Elvin", LastName: "Rueda"}})
 	books = append(books, Book{ID: "2", Isbn: "123456", Title: "Real Book", Author: &Author{FirstName: "Javier", LastName: "Gomez"}})
 	r.HandleFunc("/books", getBooks).Methods("GET")
-	r.HandleFunc("/books/{id}", getBook).Methods("GET")
+	r.HandleFunc(bookIDRoute, getBook).Methods("GET")
 	r.HandleFunc("/books", createBook).Methods("POST")
-	r.HandleFunc("/books/{id}", updateBook).Methods("PUT")
-	r.HandleFunc("/books/{id}", deleteBook).Methods("DELETE")
+	r.HandleFunc(bookIDRoute, updateBook).Methods("PUT")
+	r.HandleFunc(bookIDRoute, deleteBook).Methods("DELETE")
 
-	fmt.Println("Starting server at port 8080\n")
+	fmt.Println("Starting server at port 8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
